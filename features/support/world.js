@@ -1,7 +1,7 @@
 'use strict';
 
 const di = require('../../index.js')();
-di.registerDir('./features/assets/');
+di.registerDir('./assets/');
 
 function World() {
   this.container = di;

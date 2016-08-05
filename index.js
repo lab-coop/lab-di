@@ -2,6 +2,7 @@
 
 const di = new require('bottlejs')();
 const fs = require('fs');
+const path = require('path');
 const _ = require('lodash');
 
 module.exports = function () {
@@ -10,18 +11,33 @@ module.exports = function () {
   function registerModule(servicePath, serviceName) {
     const module = require(servicePath);
     const argList = [serviceName, module].concat(module.deps || [])
-    di.service.apply(di, argList);
+    if (module.type === 'factory') {
+      di.factory.apply(di, argList);
+    } else {
+      di.service.apply(di, argList);
+    }
   }
 
-  function registerDir(path) {
-    fs.readdir(path, function(err, serviceDirectories) {
+  function registerDir(dir, prefix) {
+    fs.readdir(dir, function(err, serviceDirectories) {
       if (err) {
-        throw new Error(`Can not register directory: ${path}`);
+        const error = `Can not register directory: ${dir} ${err}`;
+        throw new Error(error);
       }
 
       _.forEach(serviceDirectories, function (serviceDirectory){
-        const servicePath = [path, serviceDirectory].join('');
+        const servicePath = [dir, serviceDirectory].join('/');
+        if (prefix) {
+          const basename = path.basename(serviceDirectory, '.js');
+          serviceDirectory = `${prefix}-${basename}`;
+        }
         registerModule(servicePath, serviceDirectory);
+        const impDir = [servicePath, 'implementations'].join('/')
+        fs.access(impDir, function(exists) {
+          if (!exists) {
+            registerDir(impDir, serviceDirectory)
+          }
+        });
       });
     });
   }
@@ -29,6 +45,12 @@ module.exports = function () {
   function get(dependencyName) {
     return di.container[dependencyName];
   }
+
+  function getImplementation(service, implementation) {
+    return di.container[`${service}-${implementation}`];
+  }
+
+  di.container.getImplementation = getImplementation;
 
   return Object.freeze({
     registerDir,
