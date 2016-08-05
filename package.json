@@ -1,14 +1,19 @@
 {
-  "name": "lab-services",
+  "name": "lab-di",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "./node_modules/cucumber/bin/cucumber.js features/"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "chai": "^3.5.0"
+    "bottlejs": "^1.4.0",
+    "chai": "^3.5.0",
+    "lodash": "^4.14.1"
+  },
+  "devDependencies": {
+    "cucumber": "^1.2.1"
   }
 }
