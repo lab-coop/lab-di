@@ -6,6 +6,13 @@ const _ = require('lodash');
 
 module.exports = function () {
 
+
+  function registerModule(servicePath, serviceName) {
+    const module = require(servicePath);
+    const argList = [serviceName, module].concat(module.deps || [])
+    di.service.apply(di, argList);
+  }
+
   function registerDir(path) {
     fs.readdir(path, function(err, serviceDirectories) {
       if (err) {
@@ -14,10 +21,7 @@ module.exports = function () {
 
       _.forEach(serviceDirectories, function (serviceDirectory){
         const servicePath = [path, serviceDirectory].join('');
-        const module = require(servicePath);
-        di.service(serviceDirectory, module);
-        const argList = [serviceDirectory, module].concat(module.deps || [])
-        di.service.apply(di, argList);
+        registerModule(servicePath, serviceDirectory);
       });
     });
   }
