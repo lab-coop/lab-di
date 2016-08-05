@@ -30,6 +30,9 @@ module.exports = function () {
           const basename = path.basename(serviceDirectory, '.js');
           serviceDirectory = `${prefix}-${basename}`;
         }
+        if(serviceDirectory.indexOf('lab-') !== 0) {
+          return;
+        }
         registerModule(servicePath, serviceDirectory);
         const impDir = [servicePath, 'implementations'].join('/')
         fs.access(impDir, function(nonexistent) {

@@ -1,11 +1,11 @@
 Feature: DI system
 
-  As a developer I want to be able to build
-  a set of dependencies for my project
+  As a developer I want to be able to inject
+  a set of 'lab-' prefixed services for my project
 
   Scenario: I see the parsed dependencies from a directory
     Given a directory with a lab- prefixed service "lab-test"
-    When I start the application
+    When I run the application
     Then I am able to use the "lab-test" dependency in my internal service
 
   Scenario: I can use different implementations of a registered service
@@ -14,4 +14,9 @@ Feature: DI system
     Given an implemenation "implementationB" in service "lab-testWithImplementations"
     When I use service "lab-testWithImplementations" with "implementationA"
     Then I see result "result A" for service "lab-testWithImplementations" with implementation "implementationA"
+
+  Scenario: I can not register a non-lab- prefixed module
+    Given a directory without a lab- prefix "other-module" exists
+    When I run the application 
+    Then I see the module "other-module" is undefined in the di
 
