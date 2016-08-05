@@ -7,7 +7,6 @@ const _ = require('lodash');
 
 module.exports = function () {
 
-
   function registerModule(servicePath, serviceName) {
     const module = require(servicePath);
     const argList = [serviceName, module].concat(module.deps || [])
@@ -33,8 +32,8 @@ module.exports = function () {
         }
         registerModule(servicePath, serviceDirectory);
         const impDir = [servicePath, 'implementations'].join('/')
-        fs.access(impDir, function(exists) {
-          if (!exists) {
+        fs.access(impDir, function(nonexistent) {
+          if (!nonexistent) {
             registerDir(impDir, serviceDirectory)
           }
         });
