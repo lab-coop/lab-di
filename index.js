@@ -35,9 +35,7 @@ module.exports = function () {
         fs.accessSync(impDir);
         registerDir(impDir, serviceDirectory)
       } catch(err) {
-        if (err.code === 'ENOENT' || err.code === 'ENOTDIR') {
-          console.log(`Could not register ${impDir} due to ${err.code}.`);
-        } else {
+        if (err.code !== 'ENOENT' && err.code !== 'ENOTDIR') {
           throw err;
         }
       }
