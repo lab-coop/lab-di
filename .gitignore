@@ -1,6 +1,9 @@
 all.config
 build
 
+# IDE files
+.idea
+
 # Logs
 logs
 *.log

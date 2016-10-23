@@ -18,29 +18,27 @@ module.exports = function () {
   }
 
   function registerDir(dir, prefix) {
-    fs.readdir(dir, function(err, serviceDirectories) {
-      if (err) {
-        const error = `Can not register directory: ${dir} ${err}`;
-        throw new Error(error);
+    const serviceDirectories = fs.readdirSync(dir);
+    _.forEach(serviceDirectories, function (serviceDirectory) {
+      const servicePath = [dir, serviceDirectory].join('/');
+      if (prefix) {
+        const basename = path.basename(serviceDirectory, '.js');
+        serviceDirectory = `${prefix}-${basename}`;
       }
+      if(serviceDirectory.indexOf('lab-') !== 0) {
+        return;
+      }
+      registerModule(servicePath, serviceDirectory);
+      const impDir = [servicePath, 'implementations'].join('/');
 
-      _.forEach(serviceDirectories, function (serviceDirectory){
-        const servicePath = [dir, serviceDirectory].join('/');
-        if (prefix) {
-          const basename = path.basename(serviceDirectory, '.js');
-          serviceDirectory = `${prefix}-${basename}`;
+      try {
+        fs.accessSync(impDir);
+        registerDir(impDir, serviceDirectory)
+      } catch(err) {
+        if (err.code !== 'ENOENT' && err.code !== 'ENOTDIR') {
+          throw err;
         }
-        if(serviceDirectory.indexOf('lab-') !== 0) {
-          return;
-        }
-        registerModule(servicePath, serviceDirectory);
-        const impDir = [servicePath, 'implementations'].join('/')
-        fs.access(impDir, function(nonexistent) {
-          if (!nonexistent) {
-            registerDir(impDir, serviceDirectory)
-          }
-        });
-      });
+      }
     });
   }
 
