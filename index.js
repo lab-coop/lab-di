@@ -1,12 +1,12 @@
 'use strict';
 
-const di = new require('bottlejs')();
 const fs = require('fs');
 const path = require('path');
 const _ = require('lodash');
 
 module.exports = function () {
 
+  const di = new require('bottlejs')();
   function registerModule(servicePath, serviceName) {
     const module = require(servicePath);
     const argList = [serviceName, module].concat(module.deps || [])
@@ -18,29 +18,26 @@ module.exports = function () {
   }
 
   function registerDir(dir, prefix) {
-    fs.readdir(dir, function(err, serviceDirectories) {
-      if (err) {
-        const error = `Can not register directory: ${dir} ${err}`;
-        throw new Error(error);
+    const serviceDirectories = fs.readdirSync(dir);
+    _.forEach(serviceDirectories, function (serviceDirectory){
+      const servicePath = [dir, serviceDirectory].join('/');
+      if (prefix) {
+        const basename = path.basename(serviceDirectory, '.js');
+        serviceDirectory = `${prefix}-${basename}`;
       }
-
-      _.forEach(serviceDirectories, function (serviceDirectory){
-        const servicePath = [dir, serviceDirectory].join('/');
-        if (prefix) {
-          const basename = path.basename(serviceDirectory, '.js');
-          serviceDirectory = `${prefix}-${basename}`;
+      if(serviceDirectory.indexOf('lab-') !== 0) {
+        return;
+      }
+      registerModule(servicePath, serviceDirectory);
+      const impDir = [servicePath, 'implementations'].join('/')
+      try {
+        fs.accessSync(impDir);
+        registerDir(impDir, serviceDirectory);
+      } catch (e) {
+        if (!_.includes(['ENOENT', 'ENOTDIR'], e.code)) {
+          throw e;
         }
-        if(serviceDirectory.indexOf('lab-') !== 0) {
-          return;
-        }
-        registerModule(servicePath, serviceDirectory);
-        const impDir = [servicePath, 'implementations'].join('/')
-        fs.access(impDir, function(nonexistent) {
-          if (!nonexistent) {
-            registerDir(impDir, serviceDirectory)
-          }
-        });
-      });
+      }
     });
   }
 

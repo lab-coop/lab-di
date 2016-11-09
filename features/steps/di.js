@@ -2,6 +2,7 @@
 
 const expect = require('chai').expect;
 const fs = require('fs');
+const path = require('path');
 
 module.exports = function() {
   // Scenario: I see the parsed dependencies from a directory
@@ -18,7 +19,11 @@ module.exports = function() {
         callback();
       });
   });
-  this.When('I run the application', function(callback) {
+
+  this.When('I inicialize the DI', function(callback) {
+    const di = require('../../index.js')();
+    di.registerDir(path.resolve(__dirname, '../../assets/'));
+    this.container = di;
     callback();
   });
   this.Then('I am able to use the "$serviceName" dependency in my internal service', function(serviceName, callback) {
