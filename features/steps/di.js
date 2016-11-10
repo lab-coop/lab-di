@@ -5,14 +5,11 @@ const fs = require('fs');
 const path = require('path');
 
 module.exports = function() {
-  this.Given('a directory with a lab- prefixed service "$serviceName"',
+  this.Given('a directory with a service "$serviceName"',
     function(serviceName, callback) {
       fs.access('assets/'+ serviceName+ '/index.js', function (nonexistent) {
         if(nonexistent) {
           callback('The given service does not exist');
-          return;
-        } else if(serviceName.indexOf('lab-') !== 0) {
-          callback('The service is not prefixed with "lab-"');
           return;
         }
         callback();
@@ -56,8 +53,4 @@ module.exports = function() {
     });
   });
 
-  this.Then('I see the module "$moduleName" is undefined in the di', function(moduleName, callback) {
-    expect(this.container.get(moduleName)).to.not.exist;
-    callback();
-  });
 };
