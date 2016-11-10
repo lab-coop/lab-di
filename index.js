@@ -7,8 +7,12 @@ const _ = require('lodash');
 module.exports = function () {
 
   const di = new require('bottlejs')();
-  function registerModule(servicePath, serviceName) {
+  function registerModuleByPath(servicePath, serviceName) {
     const module = require(servicePath);
+    registerModule(module, serviceName);
+  }
+
+  function registerModule(module, serviceName){
     const argList = [serviceName, module].concat(module.deps || [])
     if (module.type === 'factory') {
       di.factory.apply(di, argList);
@@ -25,7 +29,7 @@ module.exports = function () {
         const basename = path.basename(serviceDirectory, '.js');
         serviceDirectory = `${prefix}-${basename}`;
       }
-      registerModule(servicePath, serviceDirectory);
+      registerModuleByPath(servicePath, serviceDirectory);
       const impDir = [servicePath, 'implementations'].join('/')
       try {
         fs.accessSync(impDir);
@@ -50,6 +54,7 @@ module.exports = function () {
 
   return Object.freeze({
     registerDir,
+    registerModule,
     get: get
   });
 }

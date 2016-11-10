@@ -14,3 +14,8 @@ Feature: DI system
     Given an implemenation "implementationB" in service "lab-testWithImplementations"
     When I inicialize the DI
     Then I see result "result A" for service "lab-testWithImplementations" with implementation "implementationA"
+
+  Scenario: I can register a module
+    Given a directory with a service "lab-test"
+    When I register the service "lab-test"
+    Then I am able to use the "lab-test" dependency in my internal service

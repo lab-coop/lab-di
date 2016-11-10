@@ -23,6 +23,14 @@ module.exports = function() {
     callback();
   });
 
+  this.When('I register the service "$serviceName"', function(serviceName, callback) {
+    const di = require('../../index.js')();
+    const testModule = require('../../assets/lab-test');
+    di.registerModule(testModule, serviceName);
+    this.container = di;
+    callback();
+  });
+
   this.Then('I am able to use the "$serviceName" dependency in my internal service', function(serviceName, callback) {
     expect(this.container.get(serviceName).test()).to.eql('test');
     callback();
