@@ -17,9 +17,9 @@ module.exports = function() {
   });
 
   this.When('I inicialize the DI', function(callback) {
-    const di = require('../../index.js')();
-    di.registerDir(path.resolve(__dirname, '../../assets/'));
-    this.container = di;
+    const tools = require('../../tools.js')();
+    tools.registerDir(path.resolve(__dirname, '../../assets/'));
+    this.container = tools.getDI();
     callback();
   });
 
