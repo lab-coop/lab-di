@@ -20,3 +20,8 @@ Feature: DI system
     When I register the service "lab-test"
     Then I see result "test" for service "lab-test"
 
+  Scenario: I can use dependencies in a factory
+    Given a directory with a service "lab-test"
+    Given a directory with a service "factory-test"
+    When I inicialize the DI
+    Then I see result "factory-test" for service "factory-test"

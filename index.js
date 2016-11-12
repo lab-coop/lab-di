@@ -24,6 +24,7 @@ module.exports = function () {
   }
 
   di.container.getImplementation = getImplementation;
+  di.container.get = get;
 
   return Object.freeze({
     registerModule,
