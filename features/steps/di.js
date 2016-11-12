@@ -51,14 +51,4 @@ module.exports = function() {
     callback();
   });
 
-  this.Given('a directory without a lab- prefix "$moduleName" exists', function(moduleName, callback) {
-    fs.access('assets/'+ moduleName + '/index.js', function (nonexistent) {
-      if(nonexistent) {
-        callback('The given module does not exist');
-        return;
-      }
-      callback();
-    });
-  });
-
 };
