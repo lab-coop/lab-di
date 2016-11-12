@@ -31,8 +31,8 @@ module.exports = function() {
     callback();
   });
 
-  this.Then('I am able to use the "$serviceName" dependency in my internal service', function(serviceName, callback) {
-    expect(this.container.get(serviceName).test()).to.eql('test');
+  this.Then('I see result "$result" for service "$serviceName"', function(result, serviceName, callback) {
+    expect(this.container.get(serviceName).test()).to.eql(result);
     callback();
   });
 

@@ -6,7 +6,7 @@ Feature: DI system
   Scenario: I see the parsed dependencies from a directory
     Given a directory with a service "lab-test"
     When I inicialize the DI
-    Then I am able to use the "lab-test" dependency in my internal service
+    Then I see result "test" for service "lab-test"
 
   Scenario: I can use different implementations of a registered service
     Given a directory with a service "lab-testWithImplementations"
@@ -18,4 +18,5 @@ Feature: DI system
   Scenario: I can register a module
     Given a directory with a service "lab-test"
     When I register the service "lab-test"
-    Then I am able to use the "lab-test" dependency in my internal service
+    Then I see result "test" for service "lab-test"
+
