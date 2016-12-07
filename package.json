@@ -4,7 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "./node_modules/cucumber/bin/cucumber.js features/"
+    "test": "npm-watch",
+    "test:all": "./node_modules/cucumber/bin/cucumber.js features/"
+  },
+  "watch": {
+    "test:all": {
+      "patterns": ["**"],
+      "extensions": ["js", "json", "feature"]
+    }
   },
   "author": "",
   "license": "ISC",
@@ -14,6 +21,7 @@
     "lodash": "4.14.1"
   },
   "devDependencies": {
-    "cucumber": "1.2.1"
+    "cucumber": "1.2.1",
+    "npm-watch": "0.1.6"
   }
 }
