@@ -23,11 +23,20 @@ module.exports = function () {
     return di.container[`${service}-${implementation}`];
   }
 
+  function extend(source) {
+    source.container.$list().forEach(function (serviceName) {
+      if (serviceName !== 'get' && serviceName !== 'getImplementation') {
+        di.service.apply(di, [serviceName, function(){ return source.get(serviceName)}]);
+      }
+    });
+  }
+
   di.container.getImplementation = getImplementation;
   di.container.get = get;
+  di.registerModule = registerModule;
+  di.get = get;
+  di.extend = extend;
 
-  return Object.freeze({
-    registerModule,
-    get: get
-  });
+  return di;
+
 }

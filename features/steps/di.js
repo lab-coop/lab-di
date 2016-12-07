@@ -31,6 +31,24 @@ module.exports = function() {
     callback();
   });
 
+  this.When('I register a service "$serviceName" into "$containerName"', function(serviceName, containerName, callback) {
+    const di = require('../../index.js')();
+    const testModule = require('../../assets/lab-test');
+    di.registerModule(testModule, serviceName);
+    this.containers[containerName] = di;
+    callback();
+  });
+
+  this.When('I merge "$containerNameA" into "$containerNameB"', function (containerNameA, containerNameB, callback){
+    this.containers[containerNameB].extend(this.containers[containerNameA]);
+    callback();
+  });
+
+  this.Then('I see result "$result" for service "$serviceName" using "$container"', function(result, serviceName, container, callback) {
+    expect(this.containers[container].get(serviceName).test()).to.eql(result);
+    callback();
+  });
+
   this.Then('I see result "$result" for service "$serviceName"', function(result, serviceName, callback) {
     expect(this.container.get(serviceName).test()).to.eql(result);
     callback();
