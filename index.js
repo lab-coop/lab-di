@@ -7,6 +7,12 @@ module.exports = function () {
   const di = new Bottle();
 
   function registerModule(module, serviceName){
+    if (module.service) {
+      serviceName = module.service;
+    }
+    if (module.implementation) {
+      serviceName = `${serviceName}-${module.implementation}`;
+    }
     const argList = [serviceName, module].concat(module.deps || [])
     if (module.type === 'factory') {
       di.factory.apply(di, argList);
