@@ -25,7 +25,7 @@ module.exports = function() {
 
   this.When('I register the service "$serviceName"', function(serviceName, callback) {
     const di = require('../../index.js')();
-    const testModule = require('../../assets/lab-test');
+    const testModule = require('../../assets/' + serviceName);
     di.registerModule(testModule, serviceName);
     this.container = di;
     callback();
