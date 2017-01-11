@@ -24,10 +24,9 @@ module.exports = function() {
   });
 
   this.When('I register the service "$serviceName"', function(serviceName, callback) {
-    const di = require('../../index.js')();
-    const testModule = require('../../assets/' + serviceName);
-    di.registerModule(testModule, serviceName);
-    this.container = di;
+    const tools = require('../../tools.js')();
+    tools.registerModuleDir(__dirname + '/../../assets/' + serviceName, serviceName);
+    this.container = tools.getDI();
     callback();
   });
 
