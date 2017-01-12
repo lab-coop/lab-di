@@ -16,7 +16,7 @@ module.exports = function() {
       });
   });
 
-  this.When('I inicialize the DI', function(callback) {
+  this.When('I initialize the DI', function(callback) {
     const tools = require('../../tools.js')();
     tools.registerDir(path.resolve(__dirname, '../../assets/'));
     this.container = tools.getDI();
