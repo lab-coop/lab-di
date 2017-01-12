@@ -15,6 +15,7 @@ module.exports = function () {
     }
     const argList = [serviceName, module].concat(module.deps || [])
     if (module.type === 'factory') {
+      module.serviceName = serviceName;
       di.factory.apply(di, argList);
     } else {
       di.service.apply(di, argList);
