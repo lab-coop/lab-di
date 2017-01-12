@@ -64,7 +64,13 @@ module.exports = function() {
   });
 
   this.Then('I see result "$result" for service "$serviceName" with implementation "$implementationName"', function(result, serviceName, implementationName, callback) {
-    expect(this.container.get(`${serviceName}-${implementationName}`).test()).to.eql(result);
+
+    const tools = require('../../tools.js')();
+    tools.registerModuleDir(path.resolve(__dirname, '../../assets/', serviceName), serviceName);
+    tools.registerModuleDir(path.resolve(__dirname, '../../assets/config'), 'config');
+    const di = tools.getDI();
+    di.get('config').set(serviceName, implementationName);
+    expect(di.get(serviceName).test()).to.eql(result);
     callback();
   });
 

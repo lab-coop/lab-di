@@ -15,7 +15,7 @@ Feature: DI system
     Given a directory with a service "otherImplementation"
     When I initialize the DI
     Then I see result "result A" for service "lab-testWithImplementations" with implementation "implementationA"
-    Then I see result "result C" for service "lab-testWithImplementations" with implementation "implementationC"
+    Then I see result "result B" for service "lab-testWithImplementations" with implementation "implementationB"
 
   Scenario: I can register a module
     Given a directory with a service "lab-test"

@@ -1,8 +1,8 @@
 'use strict';
 
 function testWithImplementations(container){
-  const implementation = container.config.get('testWithImplementations');
-  return container.getImplementation('testWithImplementations', implementation);
+  const implementation = container.get('config').get(testWithImplementations.serviceName);
+  return container.getImplementation(testWithImplementations.serviceName, implementation);
 }
 
 testWithImplementations.type = 'factory';
