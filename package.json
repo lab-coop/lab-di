@@ -9,8 +9,14 @@
   },
   "watch": {
     "test:all": {
-      "patterns": ["**"],
-      "extensions": ["js", "json", "feature"]
+      "patterns": [
+        "**"
+      ],
+      "extensions": [
+        "js",
+        "json",
+        "feature"
+      ]
     }
   },
   "author": "",
@@ -18,7 +24,8 @@
   "dependencies": {
     "bottlejs": "1.5.0",
     "chai": "3.5.0",
-    "lodash": "4.14.1"
+    "lodash": "4.14.1",
+    "verror": "1.9.0"
   },
   "devDependencies": {
     "cucumber": "1.2.1",

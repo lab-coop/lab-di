@@ -3,6 +3,7 @@
 const fs = require('fs');
 const path = require('path');
 const _ = require('lodash');
+const VError = require('verror');
 
 module.exports = function () {
 
@@ -12,7 +13,9 @@ module.exports = function () {
       const module = require(servicePath);
       di.registerModule(module, serviceName);
     } catch (e) {
-      // console.log(e);
+      if (_.includes(['MODULE_NOT_FOUND'], e.code)) {
+        throw new VError(e, `Module "${serviceName}" not found in ${servicePath}`);
+      }
     }
   }
 

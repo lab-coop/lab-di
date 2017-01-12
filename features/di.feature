@@ -27,3 +27,7 @@ Feature: DI system
     Given a directory with a service "factory-test"
     When I initialize the DI
     Then I see result "factory-test" for service "factory-test"
+
+  Scenario: I got error in case of a service does not exist
+    When I register the service "empty"
+    Then I see error "Cannot find module"

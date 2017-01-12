@@ -25,8 +25,12 @@ module.exports = function() {
 
   this.When('I register the service "$serviceName"', function(serviceName, callback) {
     const tools = require('../../tools.js')();
-    tools.registerModuleDir(__dirname + '/../../assets/' + serviceName, serviceName);
-    this.container = tools.getDI();
+    try {
+      tools.registerModuleDir(__dirname + '/../../assets/' + serviceName, serviceName);
+      this.container = tools.getDI();
+    } catch (e) {
+      this.error = e;
+    }
     callback();
   });
 
@@ -71,6 +75,11 @@ module.exports = function() {
     const di = tools.getDI();
     di.get('config').set(serviceName, implementationName);
     expect(di.get(serviceName).test()).to.eql(result);
+    callback();
+  });
+
+  this.Then('I see error "$error"', function(error, callback) {
+    expect(this.error).to.match(new RegExp(error));
     callback();
   });
 
