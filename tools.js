@@ -9,12 +9,18 @@ module.exports = function () {
 
   const di = new require('./index.js')();
   function registerModuleByPath(servicePath, serviceName) {
+    if (_.includes(servicePath, '.test.js' )) {
+        return null;
+    }
+
     try {
       const module = require(servicePath);
       di.registerModule(module, serviceName);
     } catch (e) {
       if (_.includes(['MODULE_NOT_FOUND'], e.code)) {
         throw new VError(e, `Module "${serviceName}" not found in ${servicePath}`);
+      } else {
+        throw new VError(e, `Can not initialize the module: ${serviceName} [${servicePath}]`);
       }
     }
   }
