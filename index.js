@@ -1,6 +1,7 @@
 'use strict';
 
 const Bottle = require('bottlejs');
+const _ = require('lodash');
 
 module.exports = function () {
 
@@ -32,7 +33,7 @@ module.exports = function () {
 
   function extend(source) {
     source.container.$list().forEach(function (serviceName) {
-      if (serviceName !== 'get' && serviceName !== 'getImplementation') {
+      if (!_.includes(di.container.$list(), serviceName)) {
         di.service.apply(di, [serviceName, function(){ return source.get(serviceName)}]);
       }
     });
