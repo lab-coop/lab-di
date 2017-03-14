@@ -24,7 +24,11 @@ module.exports = function () {
   }
 
   function get(dependencyName) {
-    return di.container[dependencyName];
+    try {
+      return di.container[dependencyName];
+    } catch (error) {
+      throw new Error(`Can not get the dependency "${dependencyName}": ${error}`)
+    }
   }
 
   function getImplementation(service, implementation) {
