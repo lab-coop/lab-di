@@ -5,12 +5,13 @@
   "main": "index.js",
   "scripts": {
     "test": "npm-watch",
-    "test:all": "./node_modules/cucumber/bin/cucumber.js features/",
+    "test:all": "./node_modules/cucumber/bin/cucumber.js ./features --compiler es6:babel-core/register --require ./features ",
     "compile": "babel ./ -d ./ --ignore node_modules,assets,features",
     "prepublish": "npm run compile"
   },
   "watch": {
     "test:all": {
+      "quiet": true,
       "patterns": [
         "**"
       ],

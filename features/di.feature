@@ -31,3 +31,9 @@ Feature: DI system
   Scenario: I got error in case of a service does not exist
     When I register the service "empty"
     Then I see error "Cannot find module"
+
+  Scenario: Use an ES6 module
+    Given a directory with a service "es6-module"
+    When I register the service "es6-module"
+    Then I see result "test" for service "es6-module"
+

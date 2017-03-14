@@ -14,7 +14,10 @@ module.exports = function () {
     }
 
     try {
-      const module = require(servicePath);
+      let module = require(servicePath);
+      if (module.default) {
+        module = module.default
+      }
       di.registerModule(module, serviceName);
     } catch (e) {
       if (_.includes(['MODULE_NOT_FOUND'], e.code)) {
