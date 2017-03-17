@@ -37,3 +37,7 @@ Feature: DI system
     When I register the service "es6-module"
     Then I see result "test" for service "es6-module"
 
+  Scenario: Not existent implementation
+    Given a directory with a service "lab-testWithImplementations"
+    When I get a not existent implementation for service "lab-testWithImplementations"
+    Then I see error "Can not found the implementation"

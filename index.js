@@ -32,7 +32,15 @@ module.exports = function () {
   }
 
   function getImplementation(service, implementation) {
-    return di.container[`${service}-${implementation}`];
+    try {
+      const depenedncy = di.container[`${service}-${implementation}`];
+      if (!depenedncy) {
+        throw new Error(`Can not found the implementation "${implementation}" for the service "${service}"`)
+      }
+      return depenedncy;
+    } catch (error) {
+      throw new Error(`Can not get the implementation "${implementation}" for the service "${service}": ${error}`)
+    }
   }
 
   function extend(source) {

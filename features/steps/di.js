@@ -83,4 +83,22 @@ module.exports = function() {
     callback();
   });
 
+  this.When('I get a not existent implementation for service "$serviceName"', function(serviceName, callback) {
+
+    const tools = require('../../tools.js')();
+    const implementationName = 'not_existent';
+    tools.registerModuleDir(path.resolve(__dirname, '../../assets/', serviceName), serviceName);
+    tools.registerModuleDir(path.resolve(__dirname, '../../assets/config'), 'config');
+    const di = tools.getDI();
+    di.get('config').set(serviceName, implementationName);
+
+    try {
+      di.get(serviceName).test()
+    } catch (error) {
+      this.error = error;
+    }
+    callback();
+  });
+
+
 };
