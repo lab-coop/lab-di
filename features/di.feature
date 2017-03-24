@@ -41,3 +41,17 @@ Feature: DI system
     Given a directory with a service "lab-testWithImplementations"
     When I get a not existent implementation for service "lab-testWithImplementations"
     Then I see error "Can not found the implementation"
+
+  Scenario: Using node modules
+    Given I initialize the DI
+    Given a node module "lab-config"
+    Given I register the node module service "lab-config" with name "config"
+      | implementation |
+      | memory         |
+    Given a config value "implementationA" for key "test"
+    Given a node module "lab-test"
+    When I register the node module service "lab-test" with name "test"
+      | implementation  |
+      | implementationA |
+      | implementationB |
+    Then I see result "result A" for service "test"

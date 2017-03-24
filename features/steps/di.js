@@ -16,9 +16,16 @@ module.exports = function() {
       });
   });
 
+  this.Given('a node module "$serviceName"',
+    function(serviceName, callback) {
+        require(serviceName);
+        callback();
+  });
+
   this.When('I initialize the DI', function(callback) {
     const tools = require('../../tools.js')();
     tools.registerDir(path.resolve(__dirname, '../../assets/'));
+    this.tools = tools;
     this.container = tools.getDI();
     callback();
   });
@@ -31,6 +38,18 @@ module.exports = function() {
     } catch (e) {
       this.error = e;
     }
+    callback();
+  });
+
+  this.When('I register the node module service "$serviceName" with name "$name"', function(serviceName, name, implementations, callback) {
+    this.tools.registerNodeModule(serviceName, implementations.rows()[0], name);
+    this.container = this.tools.getDI();
+    callback();
+  });
+
+  this.Given('a config value "$value" for key "$key"',function(value, key, callback) {
+    const config = this.container.get('config');
+    config.update(key, value);
     callback();
   });
 
@@ -99,6 +118,5 @@ module.exports = function() {
     }
     callback();
   });
-
 
 };

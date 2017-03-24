@@ -28,6 +28,22 @@ module.exports = function () {
     }
   }
 
+
+  function registerNodeModule(modulePath, implementations, name) {
+    let serviceName = modulePath;
+    if (name) {
+      serviceName = name;
+    }
+    registerModuleByPath(modulePath, serviceName)
+    _.forEach(implementations, (implementation)=>{
+    console.log(modulePath, serviceName, implementation);
+      registerModuleByPath(
+        `${modulePath}/implementations/${implementation}`,
+        `${serviceName}-${implementation}`
+      );
+    })
+  }
+
   function registerDir(dir) {
     const serviceDirectories = fs.readdirSync(dir).filter(function(file) {
       return fs.statSync(path.join(dir, file)).isDirectory();
@@ -80,6 +96,7 @@ module.exports = function () {
   return Object.freeze({
     registerDir,
     registerModuleDir,
+    registerNodeModule,
     getDI: getDI
   });
 }
