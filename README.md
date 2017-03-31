@@ -2,7 +2,7 @@
 
 ## Introduction
 
-lab-di is a small depenedecny injection container based on BottleJS. It featues directory loading, implementation handling.
+lab-di is a small dependency injection container based on BottleJS. It features directory loading, implementation handling.
 
 ## Build a service with different implementations
 
@@ -26,7 +26,7 @@ Service.type = 'factory';
 module.exports = Service;
 ```
 
-service/implemenetations/memory.js
+service/implementations/memory.js
 ```js
 function MemoryService (config) {
   // return with the memory implementation  
