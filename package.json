@@ -27,9 +27,9 @@
   "dependencies": {
     "bottlejs": "1.5.0",
     "chai": "3.5.0",
-    "lab-test": "0.0.3",
     "lab-config": "1.0.0",
-    "lodash": "4.14.1",
+    "lab-test": "0.0.3",
+    "lodash": "^4.17.10",
     "verror": "1.9.0"
   },
   "devDependencies": {
